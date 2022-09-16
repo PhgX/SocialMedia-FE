@@ -1,11 +1,13 @@
 
 
-function App () {
-    return (
-        <>
-            <h2>A Product of Hướng Nội Team</h2>
-        </>
-    )
+import Login from './pages/Login';
+
+function App() {
+  return (
+    <>
+      <Login></Login>
+    </>
+  );
 }
 
 export default App;
