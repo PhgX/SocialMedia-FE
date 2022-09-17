@@ -7,7 +7,7 @@ import { useTheme } from "@mui/system";
 // import { getUsers } from "../redux/authSlice";
 // import { useDispatch } from "react-redux";
 
-export function Layout() {
+export function Layout({children}) {
   const theme = useTheme();
     return(
         <Box
@@ -31,7 +31,7 @@ export function Layout() {
                     borderRight: "1px solid #ccc",
                   }}
                 >
-                  {/* {children} */}
+                  {children}
                 </Box>
               </Grid>
               <Hidden lgDown>
