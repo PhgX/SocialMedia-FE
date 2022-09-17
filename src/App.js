@@ -3,12 +3,13 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./utils/PrivateRoute";
 import { Route, Routes} from "react-router-dom";
-import Home from "./pages/Home";
+// import Home from "./pages/Home";
 import PostDetails from "./pages/PostDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { setAuth } from "./redux/slices/authSlice";
+import { Layout } from "./components/Layout";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ function App() {
   return (
     <Routes>
       <Route element = {<PrivateRoute/>}>
-        <Route path="/home" element={<Home/>} />
+        <Route path="/home" element={<Layout/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/postDetails" element={<PostDetails/>} />
       </Route>
