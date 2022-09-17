@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 import { registerUser } from "../redux/slices/authSlice";
 
+
+const URL_API = 'http://localhost:3000'
+
 export default function RegisterForm() {
   const [registerData, setRegisterData] = useState({
     name: "",
