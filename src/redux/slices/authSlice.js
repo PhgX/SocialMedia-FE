@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+
 import axios from "axios";
 
 const initialState = {
@@ -14,7 +16,16 @@ export const loginUser = createAsyncThunk(
         return data;
     }
 )
+export const registerUser = createAsyncThunk(
+    "auth/registerUser",
+    async (userData) => {
+      const { data } = await axios.post("http://localhost:4000/auth/register", userData);
+      return data;
+    }
+  );
 
+
+  
 export const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -28,18 +39,43 @@ export const authSlice = createSlice({
             state.status = "loading";
         },
         [loginUser.fulfilled]: (state, action) => {
-            const token = action.payload.token;
-            localStorage.setItem("token",token)
-            state.user.name = action.payload.name;
-            state.user.email = action.payload.email;
-            state.user.id = action.payload.id;
-            state.status = 'success';
+            const { token, name, username, email, _id } = action.payload.response;
+            localStorage.setItem(
+              "login",
+              JSON.stringify({ token, email, _id, name, username, isLoggedIn: true })
+            );
+            state.user.name = name;
+            state.user.username = username;
+            state.user.email = email;
+            state.user._id = _id;
+            state.status = "success";
             state.isLoggedIn = true;
-        },
+          },
         [loginUser.rejected]: (state, action) => {
             state.status = 'failed'
             state.isLoggedIn = false
-        }
+        },
+        [registerUser.pending]: (state, action) => {
+            state.status = "loading";
+          },
+          [registerUser.fulfilled]: (state, action) => {
+            state.status = "success";
+            const { token, name, email, username, _id } = action.payload.response;
+            localStorage.setItem(
+              "login",
+              JSON.stringify({ token, name, email, username, _id, isLoggedIn: true })
+            );
+            state.user.name = name;
+            state.user.username = username;
+            state.user.email = email;
+            state.user._id = _id;
+            state.status = "success";
+            state.isLoggedIn = true;
+          },
+          [registerUser.rejected]: (state, action) => {
+            state.status = "failed";
+            state.isLoggedIn = false;
+          }
     }
 });
 

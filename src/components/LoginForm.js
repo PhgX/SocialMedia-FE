@@ -1,29 +1,35 @@
-import { TextField, Button } from "@mui/material";
-import React, { useState } from "react";
+import { TextField, Button, CircularProgress } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/slices/authSlice";
-
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
   });
+  const { status, isLoggedIn } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(loginData))
+    dispatch(loginUser(loginData));
   };
   const handleOnChange = (e) => {
-    
     setLoginData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
     console.log(loginData);
   };
-
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home");
+    }
+  }, [isLoggedIn, navigate]);
   return (
     <>
       <form onSubmit={(e) => handleSubmit(e)}>
@@ -68,7 +74,11 @@ export default function LoginForm() {
           color="primary"
           type="submit"
         >
-          Login
+          {status === "loading" ? (
+            <CircularProgress size={24} sx={{ color: "#FFF" }} />
+          ) : (
+            "Login"
+          )}
         </Button>
       </form>
       <Button

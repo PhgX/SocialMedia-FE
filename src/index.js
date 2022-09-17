@@ -1,6 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
+import ReactDOM from 'react-dom/client';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./index.css";
 import App from "./App";
@@ -9,12 +8,8 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 const theme = createTheme({});
 
-
-console.log(
-  "Hey Developer,\n\nHope you're doing fine.\nThanks for stopping by.\n\n@wasifbaliyan"
-);
-
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
@@ -24,5 +19,4 @@ ReactDOM.render(
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
 );
