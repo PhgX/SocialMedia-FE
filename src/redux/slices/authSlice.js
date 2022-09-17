@@ -7,12 +7,12 @@ const initialState = {
     user: {}
 }
 
-const URL = "http://localhost:4000";
+const REACT_APP_API_URL = "http://localhost:4000";
 
 export const loginUser = createAsyncThunk(
     "auth/loginUser",
     async (userData) => {
-        const {data} = await axios.post(`${URL}/auth/login`,userData);
+        const {data} = await axios.post(`${REACT_APP_API_URL}/auth/login`,userData);
         return data;
     }
 );
@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk(
 export const getProfile = createAsyncThunk(
     "auth/getProfile", 
     async (id) => {
-        const { data } = await axios.get(`${URL}/api/profile/` + id);
+        const { data } = await axios.get(`${REACT_APP_API_URL}/api/profile/` + id);
         return data;
     }
 );
@@ -28,7 +28,7 @@ export const getProfile = createAsyncThunk(
 export const registerUser = createAsyncThunk(
     "auth/registerUser",
     async (userData) => {
-      const { data } = await axios.post(`${URL}/auth/register`, userData);
+      const { data } = await axios.post(`${REACT_APP_API_URL}/auth/register`, userData);
       return data;
     }
   );

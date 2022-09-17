@@ -12,18 +12,32 @@ import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 
 
 function App() {
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if ("login" in localStorage) {
+      const login = JSON.parse(localStorage.getItem("login"));
+      axios.defaults.headers.common["authorization"] = `Bearer ${login.token}`;
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    const { isLoggedIn } = JSON.parse(localStorage.getItem("login")) || {};
+    if (isLoggedIn) {
+      dispatch(setAuth({ isLoggedIn }));
+    }
+  }, [dispatch, isLoggedIn]);
+
   return (
-    <Router>
-      <Routes>
-        <Route element = {<PrivateRoute/>}>
-          <Route path="/home" element={<Home/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/postDetails" element={<PostDetails/>} />
-          <Route path="/profile/:id" element={<Profile />} />
-        </Route>
-        <Route path="/" element={<Login/>}/>
-      </Routes>
-    </Router>
+   <Routes>
+      <Route element = {<PrivateRoute/>}>
+        <Route path="/home" element={<Home/>} />
+        <Route path="/profile/:id" element={<Profile/>} />
+        <Route path="/postDetails" element={<PostDetails/>} />
+      </Route>
+      <Route path="/" element={<Login/>}/>
+  </Routes>
   );
 }
 
