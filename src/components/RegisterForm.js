@@ -1,6 +1,10 @@
-import { Button, CircularProgress, TextField } from "@mui/material";
-import { useState } from "react";
+import { Button,  TextField } from "@mui/material";
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
 
+const URL_API = 'http://localhost:3000'
 
 export default function RegisterForm() {
 
@@ -12,10 +16,26 @@ export default function RegisterForm() {
             name: ""
         }
     )
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { status, isLoggedIn } = useSelector((state) => state.auth);
+
+    // const triggerAPI = useCallback(async () => {
+    //     const res = await axios.post(URL_API, { registerData: registerData }).then(() => console.log(res));
+    // }, [registerData]);
     
+    // const handleSubmit = useCallback((e) => {
+    //     e.preventDefault();
+    //     triggerAPI();
+    // }, [triggerAPI]);
+
     const handleSubmit = (e) => {
-        console.log(e);
-    }
+        e.preventDefault();
+        dispatch(registerUser(registerData));
+      };
+
     const handleOnChange = (e) => {
         console.log(e);
         setRegisterData((prev) => ({
@@ -23,9 +43,16 @@ export default function RegisterForm() {
           [e.target.name]: e.target.value,
         }));
       };
+      
+      useEffect(() => {
+        if (isLoggedIn) {
+          navigate('/home')
+        }
+      }, [isLoggedIn, navigate]);
+
     return (
         <>
-            <form onSubmit={(e) => handleSubmit(e)}>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     onChange={(e) => handleOnChange(e)}
                     name="username"
@@ -79,7 +106,11 @@ export default function RegisterForm() {
                     variant="contained"
                     color="primary"
                 >
-                    Register
+                     {status === "loading" ? (
+                    <CircularProgress size={24} sx={{ color: "#FFF" }} />
+                    ) : (
+                    "Register"
+                    )}
                 </Button>
             </form>
         </>
