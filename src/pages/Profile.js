@@ -36,21 +36,33 @@ export default function Profile() {
   const theme = useTheme();
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { profile, status } = useSelector((state) => state.auth);
+  const { profile, status, newPosts } = useSelector((state) => {
+    // console.log('state.auth :',state.auth);
+   return state.auth
+  });
+  // console.log("profile", profile);
+  // console.log("status", status);
+  
+  
   const { followingStatus, followerStatus, followers, followings } =
     useSelector((state) => state.follow);
   const { _id } = JSON.parse(localStorage.getItem("login"));
+
 
   useEffect(() => {
     dispatch(getProfile(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (profile.userId) {
-      dispatch(getFollowers(profile.userId._id));
-      dispatch(getFollowings(profile.userId._id));
+    if(profile) {
+        if (profile.userId) {
+        // console.log('profile.userId',profile.userId)
+        dispatch(getFollowers(profile.userId._id));
+        dispatch(getFollowings(profile.userId._id));
+      }
     }
-  }, [dispatch, profile.userId]);
+    
+  }, [dispatch], (profile? profile.userId:""));
 
   const handleFollow = async () => {
     const responseFollow = await followAccount({
@@ -87,8 +99,10 @@ export default function Profile() {
   };
 
   function hideFollow() {
-    if (profile.userId) {
-      return _id === profile.userId._id;
+    if(profile){
+        if (profile.userId) {
+        return _id === profile.userId._id;
+      }
     }
   }
 
@@ -114,10 +128,10 @@ export default function Profile() {
             </RouteLink>
           </Grid>
 
-          {status === "success" && (
+          {status === "success" && profile != null && (
             <Grid item>
               <Typography variant="h6">
-                {profile.userId && profile.userId && profile.userId.name}
+                {profile.userId && profile.userId.name}
               </Typography>
               <Typography sx={{ fontSize: "12px", color: "#555" }}>
                 {profile.posts && profile.posts.length} posts
@@ -133,12 +147,13 @@ export default function Profile() {
           </Box>
         )}
       </Box>
+
       {status === "success" && (
         <Box height="90vh" sx={{ overflowY: "scroll" }}>
           <Box position="relative">
             <img
               width="100%"
-              src={profile.backgroundImageUrl}
+              src={profile? profile.backgroundImageUrl:""}
               alt="background"
             />
             <Box
@@ -150,7 +165,7 @@ export default function Profile() {
                 borderRadius: "50%",
               }}
             >
-              <img width="150px" src={profile.profileImageUrl} alt="profile" />
+              <img width="150px" src={profile? profile.profileImageUrl: ""} alt="profile" />
             </Box>
           </Box>
           <Box textAlign="right" padding="10px 20px">
@@ -224,9 +239,9 @@ export default function Profile() {
                 <InsertLinkIcon htmlColor="#555" />
                 <Link
                   sx={{ textDecoration: "none", marginLeft: "6px" }}
-                  href={profile.website || "https:/wasifbaliyan.com"}
+                  href={profile? (profile.website? profile.website : "https:/wasifbaliyan.com"): ""}
                 >
-                  {profile.website ? profile.website : "www"}
+                  {profile? (profile.website? profile.website : "https:/wasifbaliyan.com"): ""}
                 </Link>
               </Box>
               <Box display="flex" marginLeft="1rem">
@@ -254,6 +269,8 @@ export default function Profile() {
               </Typography>
             </Box>
           </Box>
+
+
           <Box borderBottom="1px solid #ccc">
             <Typography
               display="inline-block"
@@ -274,5 +291,6 @@ export default function Profile() {
         </Box>
       )}
     </Box>
+    
   );
 }

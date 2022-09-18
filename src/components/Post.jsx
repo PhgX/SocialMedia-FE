@@ -29,13 +29,17 @@ export default function Post({ post, profile }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+ 
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
   };
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
+ 
   const { _id } = JSON.parse(localStorage.getItem("login"));
+ 
   const handleLike = async (e) => {
     e.preventDefault();
     dispatch(updateLike({ id: post._id }));
@@ -44,6 +48,7 @@ export default function Post({ post, profile }) {
       dispatch(updateLike({ id: post._id }));
     }
   };
+  
   const handleAddComment = async () => {
     const response = await addComment({ id: post._id, text: commentText });
     if (response) {
@@ -121,7 +126,7 @@ export default function Post({ post, profile }) {
                       <Typography
                         sx={{ fontSize: "15px", mr: "6px", color: "#555" }}
                       >
-                        {formatDistanceToNow(new Date(post.createdAt))}
+                        {formatDistanceToNow(new Date(post.timestamps))}
                       </Typography>
                     </Box>
                     <Box>

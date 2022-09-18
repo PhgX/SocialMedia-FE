@@ -9,21 +9,23 @@ const initialState = {
   comments: [],
 };
 
+const REACT_APP_API_URL = "http://localhost:4000";
+
 export const getPosts = createAsyncThunk("post/getPosts", async () => {
-  const { data } = await axios.get("/api/posts");
+  const { data } = await axios.get(`${REACT_APP_API_URL}/posts/getpost`);
   return data;
 });
 
 export const getPostDetails = createAsyncThunk(
   "post/getPostDetails",
   async (id) => {
-    const { data } = await axios.get("/api/posts/" + id);
+    const { data } = await axios.get(`${REACT_APP_API_URL}/api/posts/` + id);
     return data;
   }
 );
 
 export const getComments = createAsyncThunk("post/getComments", async (id) => {
-  const { data } = await axios.get("/api/comments/" + id);
+  const { data } = await axios.get(`${REACT_APP_API_URL}/api/comments/` + id);
   return data;
 });
 
