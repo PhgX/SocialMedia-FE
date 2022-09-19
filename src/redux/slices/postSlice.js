@@ -11,8 +11,9 @@ const initialState = {
 
 const REACT_APP_API_URL = "http://localhost:4000";
 
-export const getPosts = createAsyncThunk("post/getPosts", async () => {
-  const { data } = await axios.get(`${REACT_APP_API_URL}/posts/getpost`);
+
+export const getPosts = createAsyncThunk("post/getPosts", async (id) => {
+  const { data } = await axios.get(`${REACT_APP_API_URL}/posts/`+id);
   return data;
 });
 
@@ -46,7 +47,8 @@ export const postSlice = createSlice({
     },
     [getPosts.fulfilled]: (state, action) => {
       state.status = "success";
-      state.posts = action.payload.response.posts;
+      state.posts = action.payload;
+      console.log(state.posts);
     },
     [getPosts.rejected]: (state, action) => {
       state.status = "failed";

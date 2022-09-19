@@ -3,14 +3,15 @@ import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Box from "@mui/material/Box";
 import { Grid, Hidden } from "@mui/material";
+import { useDispatch } from "react-redux";
 import { useTheme } from "@mui/system";
-// import { getUsers } from "../redux/authSlice";
-// import { useDispatch } from "react-redux";
 
-export function Layout({children}) {
-  const theme = useTheme();
-    return(
-        <Box
+
+export default function Layout({ children }) {
+    const theme = useTheme();
+    const dispatch = useDispatch();
+    return (
+      <Box
         sx={{
           maxWidth: theme.breakpoints.values.lg,
           margin: "0 auto",
@@ -42,6 +43,6 @@ export function Layout({children}) {
             </Grid>
           </Grid>
         </Grid>
-      </Box> 
-    )
-}
+      </Box>
+    );
+  }

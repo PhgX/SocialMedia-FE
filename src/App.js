@@ -1,15 +1,15 @@
-
+import React from "react";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./utils/PrivateRoute";
-// import Home from "./pages/Home";
+import Home from "./pages/Home";
+import Layout from "./components/Layout";
 import PostDetails from "./pages/PostDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { setAuth } from "./redux/slices/authSlice";
-import { Layout } from "./components/Layout";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 
 function App() {
@@ -33,8 +33,8 @@ function App() {
   return (
    <Routes>
       <Route element = {<PrivateRoute/>}>
-        <Route path="/home" element={<Layout/>} />
-        <Route path="/users/detail/:id" element={<Profile/>} />
+        <Route path="/home" element={<Layout children={<Home/>}/>} />
+        <Route path="/profile/:id" element={<Layout children={<Profile/>}/>} />
         <Route path="/postDetails" element={<PostDetails/>} />
       </Route>
       <Route path="/" element={<Login/>}/>
