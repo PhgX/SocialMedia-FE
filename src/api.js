@@ -1,5 +1,19 @@
 import axios from 'axios';
 
+const REACT_APP_API_URL = "http://localhost:4000";
+
+
+export const addPost = async (postData) => {
+  try {
+    const { data } = await axios.post(`${REACT_APP_API_URL}/posts`, postData);
+    return data;
+  } catch (error) {
+    alert("Something went wrong.");
+  }
+};
+
+
+
 export const followAccount = async (follow) => {
     try {
       const { data } = await axios.post("/api/followers", follow);
